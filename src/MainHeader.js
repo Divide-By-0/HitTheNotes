@@ -1,5 +1,6 @@
 import React, {Fragment} from "react";
 import styled, {css} from "styled-components"
+import { backgroundColor } from './layout_styles.js';
 
 class Header extends React.Component  {
     constructor(props) {
@@ -22,7 +23,7 @@ const RedHeader = styled.div`
     position: absolute;
     width:100%;
     height:100%;
-    background: #D02000;
+    background: ${backgroundColor.color};
     z-index: -1;
 
 `;
@@ -39,7 +40,7 @@ const Button = styled.button`
     height: 70%;
     top: 15%;
 
-    background: #D02000;
+    background: ${backgroundColor.color};
     border-radius: 10px;
 `;
 
@@ -64,7 +65,7 @@ export const Text = styled.span`
     text-align: center;
     vertical-align: middle;
 
-    background: #D02000;
+    background: ${backgroundColor.color};
     border-radius: 10px;
 `
 export default Header;

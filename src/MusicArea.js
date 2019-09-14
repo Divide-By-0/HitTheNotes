@@ -1,6 +1,8 @@
 import React, {Fragment} from "react";
 import styled, {css} from "styled-components"
-
+import { backgroundColor } from './layout_styles.js';
+var hash = require('object-hash');
+ 
 class Notes extends React.Component  {
     constructor(props) {
       super(props);
@@ -32,9 +34,20 @@ class Notes extends React.Component  {
                 />)
         }
 
+        let noteList = [];
+        for (let note in this.props.notes){
+            noteList.push(
+                <Notes
+                    rank={i}
+                    key={hash(note)}
+                    name={hash(note)}
+                />)
+        }
+
         return(
             <Fragment>
                 {noteLines}
+                {noteList}
             </Fragment>
         );
     }
@@ -44,7 +57,7 @@ const RedFooter = styled.div`
     position: absolute;
     width:100%;
     height:100%;
-    background: #D02000;
+    background: ${backgroundColor.color};
     z-index: -1;
 
 `;
@@ -61,7 +74,7 @@ const Button = styled.button`
     height: 70%;
     top: 15%;
 
-    background: #D02000;
+    background: ${backgroundColor.color};
     border-radius: 0px 10px 10px 0px;
 `;
 
@@ -98,7 +111,7 @@ export const Text = styled.span`
     text-align: center;
     vertical-align: middle;
 
-    background: #D02000;
+    background: ${backgroundColor.color};
     border-radius: 10px;
 `
 
@@ -119,6 +132,19 @@ const SongTextField = styled.input`
     border: 1px solid black;
     box-sizing: border-box;
     border-radius: 10px 0px 0px 10px;
+`;
+
+let percentPerTimeStep = 5;
+
+const Note = styled.div`
+    position: absolute;
+    height: 13%;
+    width: ${props => percentPerTimeStep * props.duration}%;
+    left: ${props => props.timeStart * percentPerTimeStep}%;
+    top: ${props => headerHeight + (height) * (props.rank)}%;
+
+    background: #D02000;
+    border-radius: 20px 20px 0px 0px;
 `;
 
 export default Notes;

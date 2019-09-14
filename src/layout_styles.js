@@ -1,3 +1,6 @@
+export const backgroundColor = {
+  color: "#1c9399"
+}
 export const layoutStyles = {
     tablec: {
       width: '700px',
