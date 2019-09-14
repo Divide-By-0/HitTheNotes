@@ -4,7 +4,7 @@ import styled, {css} from "styled-components"
 class Footer extends React.Component  {
     constructor(props) {
       super(props);
-      let defaultUrl = "https://www.youtube.com/watch?v=XMqEFuGA2cE";
+      let defaultUrl = "https://www.youtube.com/watch?v=5d4f8-WTd0U";
       this.state = {enteredUrl:defaultUrl, defaultUrl}
       this._getNotesFromUrlHandler = this._getNotesFromUrlHandler.bind(this);
       this._handleTextFieldChange = this._handleTextFieldChange.bind(this);
@@ -12,7 +12,7 @@ class Footer extends React.Component  {
 
     _getNotesFromUrlHandler(e) {
         e.preventDefault();
-        fetch(`${this.props.serverUrl}/notes`)
+        fetch(`${this.props.serverUrl}/notes/${this.state.enteredUrl.split("watch?v=")[1]}`)
         .then(res => res.json())
         .then((data) => {
             console.log(data);
@@ -20,8 +20,9 @@ class Footer extends React.Component  {
         })
         .catch(console.log);
     }
-    _handleTextFieldChange(e){
-        this.setState({
+    
+    async _handleTextFieldChange(e){
+        await this.setState({
             enteredUrl: e.target.value
         });
         console.log(this.state.enteredUrl);
