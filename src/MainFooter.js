@@ -4,14 +4,34 @@ import styled, {css} from "styled-components"
 class Footer extends React.Component  {
     constructor(props) {
       super(props);
-      this.state = {}
+      let defaultUrl = "https://www.youtube.com/watch?v=XMqEFuGA2cE";
+      this.state = {enteredUrl:defaultUrl, defaultUrl}
+      this._getNotesFromUrlHandler = this._getNotesFromUrlHandler.bind(this);
+      this._handleTextFieldChange = this._handleTextFieldChange.bind(this);
     };
+
+    _getNotesFromUrlHandler(e) {
+        e.preventDefault();
+        fetch(`${this.props.serverUrl}/notes`)
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data);
+            this.setState({ notes: data });
+        })
+        .catch(console.log);
+    }
+    _handleTextFieldChange(e){
+        this.setState({
+            enteredUrl: e.target.value
+        });
+        console.log(this.state.enteredUrl);
+    }
     render() {
         return(
             <Fragment>
                 <RedFooter/>
-                <SongTextField defaultValue="https://www.youtube.com/watch?v=XMqEFuGA2cE" />
-                <GetLinkButton> Go </GetLinkButton>
+                <SongTextField value={this.state.enteredUrl} onChange={this._handleTextFieldChange} defaultValue={this.state.defaultUrl} />
+                <GetLinkButton onClick={this._getNotesFromUrlHandler}> Go </GetLinkButton>
             </Fragment>
         );
     }
@@ -77,7 +97,7 @@ const SongTextField = styled.input`
     top: 15%;
     placeholder: "Youtube URL";
 
-    border: 1px solid black;
+    border: 1px solid white;
     box-sizing: border-box;
     border-radius: 10px 0px 0px 10px;
 `;

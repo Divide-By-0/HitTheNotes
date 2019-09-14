@@ -18,7 +18,8 @@ class App extends Component {
       activePlayers: {}, // player i uses cards i and i + 1, objects like 0:{...info}
       leaderboardState: {}, // to show for all time, each entry like 'Aayush':3.45
       faceUpHandCards: {},
-      faceUpHoleCards: [] 
+      faceUpHoleCards: [],
+      serverUrl: "http://localhost:3001", 
     };
     this._updateBalance = newBalance => {
       //write to firebase @ michael
@@ -80,7 +81,9 @@ class App extends Component {
           <Notes/>
         </div>
         <div style={layoutStyles.footer}>
-          <Footer/>
+          <Footer
+            serverUrl={this.state.serverUrl}
+          />
         </div>
       </Fragment>
     );
