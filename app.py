@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, j
 import youtube_dl
 import subprocess
 import py_midicsv
-
+app = Flask(__name__)
 class MyLogger(object):
     def debug(self, msg):
         pass
@@ -30,6 +30,7 @@ def download_youtube(link):
         'progress_hooks': [my_hook],
         'outtmpl': 'input.wav'
     }
+    link = 'https://www.youtube.com/watch?v=' + link
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([link])
 
@@ -74,4 +75,3 @@ def get_notes(link):
 
 if __name__ == "__main__":
     app.run()
-    get_notes("https://www.youtube.com/watch?v=g11uGTwhY6M")
