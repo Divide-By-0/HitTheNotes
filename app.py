@@ -65,7 +65,7 @@ def midi_json(output):
     final["notes"] = note
     return final
 
-@app.route('/api/get_notes1', methods=['GET'])
+#@app.route('/api/get_notes1', methods=['GET'])
 def get_notes1():
      #download_youtube(link)
      #convert_midi()
@@ -73,14 +73,15 @@ def get_notes1():
      print(notes)
      return notes
 
-@app.route('/api/get_notes', methods=['GET'])
+#@app.route('/api/get_notes', methods=['GET'])
 def get_notes():
-    link = request.args.get('link', default = '5d4f8-WTd0U', type = str)
-    download_youtube(link)
-    convert_midi()
+    #link = request.args.get('link', default = '5d4f8-WTd0U', type = str)
+    #download_youtube(link)
+    #convert_midi()
     notes = midi_json("test.mid")
     print(notes)
     return notes
 
 if __name__ == "__main__":
-    app.run(port=3001)
+    #app.run(port=3001)
+    get_notes()
