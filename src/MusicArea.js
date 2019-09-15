@@ -82,7 +82,7 @@ class Notes extends React.Component  {
         let noteList = [];
         if(this.props.songNotes && Object.keys(this.props.songNotes).length > 0){
             this.props.songNotes.notes.forEach(note => {
-                console.log('note', note, this.state.notes.indexOf(note.pitch.slice(0, -1)))
+                // console.log('note', note, this.state.notes.indexOf(note.pitch.slice(0, -1)))
                 noteList.push(
                     <Note
                         rank={noteNum - 1 - note.pitch}

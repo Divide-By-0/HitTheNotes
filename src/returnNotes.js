@@ -1,0 +1,1 @@
+export const notesGood = {"notes": {"id": "test.mid", "notes": [{"pitch": 2, "start": 0.0, "end": 15.36}, {"pitch": 3, "start": 19.2, "end": 34.56}, {"pitch": 7, "start": 38.4, "end": 53.76}, {"pitch": 3, "start": 57.6, "end": 72.0}, {"pitch": 2, "start": 72.0, "end": 75.84}]}}

@@ -1,6 +1,7 @@
 import React, {Fragment} from "react";
 import styled, {css} from "styled-components"
 import { backgroundColor } from './layout_styles.js';
+import {notesGood} from './returnNotes'
 
 class Footer extends React.Component  {
     constructor(props) {
@@ -14,14 +15,16 @@ class Footer extends React.Component  {
 
     _getNotesFromUrlHandler(e) {
         e.preventDefault();
-        fetch(`${this.props.serverUrl}/api/get_notes?link=${this.state.enteredUrl.split("watch?v=")[1]}`)
-        .then(res => res.json())
-        .then((data) => {
-            console.log(data);
-            this.setState({ notes: data });
-            this.props._updateNotes(data);
-        })
-        .catch(console.log);
+        this.setState({notes: notesGood.notes});
+        this.props._updateNotes(notesGood.notes);
+        // fetch(`${this.props.serverUrl}/api/get_notes?link=${this.state.enteredUrl.split("watch?v=")[1]}`)
+        // .then(res => res.json())
+        // .then((data) => {
+        //     console.log(data);
+        //     this.setState({ notes: data });
+        //     this.props._updateNotes(data);
+        // })
+        // .catch(console.log);
     }
     
     _pressGoButton(e){
@@ -42,6 +45,12 @@ class Footer extends React.Component  {
                 <RedFooter/>
                 <SongTextField value={this.state.enteredUrl} onChange={this._handleTextFieldChange} />
                 <GetLinkButton onClick={this._pressGoButton}> {this.state.buttonText} </GetLinkButton>
+                {/* <ShareBtn 
+                    url="https://www.facebook.com/sharer/sharer.php?u=https://hit-the-notes.herokuapp.com"
+                    text="Share to facebook!"
+                    className='ib'
+                    displayText='Share'
+                /> */}
             </Fragment>
         );
     }
