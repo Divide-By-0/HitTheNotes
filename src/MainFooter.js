@@ -14,7 +14,7 @@ class Footer extends React.Component  {
 
     _getNotesFromUrlHandler(e) {
         e.preventDefault();
-        fetch(`${this.props.serverUrl}/notes/${this.state.enteredUrl.split("watch?v=")[1]}`)
+        fetch(`${this.props.serverUrl}/get_notes/${this.state.enteredUrl.split("watch?v=")[1]}`)
         .then(res => res.json())
         .then((data) => {
             console.log(data);
