@@ -51,6 +51,7 @@ class Footer extends React.Component  {
                     className='ib'
                     displayText='Share'
                 /> */}
+                {/* <fbButton><a href="https://www.facebook.com/sharer/sharer.php?u=https://hit-the-notes.herokuapp.com">Share to FB!</a></fbButton> */}
             </Fragment>
         );
     }
@@ -83,6 +84,10 @@ const Button = styled.button`
 
 const GetLinkButton = styled(Button)`
     left: 65%;
+`;
+
+const fbButton = styled(Button)`
+    left: 80%;
 `;
 
 
