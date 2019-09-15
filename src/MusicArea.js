@@ -25,17 +25,22 @@ class Notes extends React.Component  {
                 "G",
                 "G#"],    
             analyser: null,
+            noteOffset: 800
         }
         this.analyserCallback = this.analyserCallback.bind(this);
     };
 
     async analyserCallback(payload) {
         let newFreqList = this.state.last100Frequencies.concat([payload.frequency]);
-        console.log(newFreqList)
+        console.log(payload.frequency)
         if(this.state.last100Frequencies.length > 100){
-          newFreqList = newFreqList.shift();
+          newFreqList.shift();
+        //   newFreqList = newFreqList.slice(1);
         }
         await this.setState({last100Frequencies: newFreqList});
+        if(this.props.isPlottingPitch){
+            this.setState({noteOffset:this.state.noteOffset-1});
+        }
     }
 
     componentDidMount(){
@@ -47,21 +52,18 @@ class Notes extends React.Component  {
         }
         this.setState({analyser: new pitchAnalyser(analyserOptions)});
     }
-    
-    // Handle error
-    handleError(err) {
-        throw new Error(`Opps something went wrong: ${err}`);
-    }
+
     componentWillUnmount() {
         this.state.analyser.close();
     }
+
     render() {
         const noteLines = [];
         let noteNum = 12;
         for (let i = noteNum-1; i >= 0; i--){
             noteLines.push(
                 <NotesLine 
-                    rank={i}
+                    rank={noteNum-i-1}
                     key={this.state.notes[i]}
                     name={this.state.notes[i]}
                 />)
@@ -71,7 +73,7 @@ class Notes extends React.Component  {
         for (let i = noteNum-1; i >= 0; i--){
             noteTexts.push(
                 <NotesText 
-                    rank={i}
+                    rank={noteNum-i-1}
                     key={this.state.notes[i]}
                     name={this.state.notes[i]}
                 >{this.state.notes[i]}</NotesText>)
@@ -87,13 +89,17 @@ class Notes extends React.Component  {
                         duration={note.end-note.start}
                         timeStart={note.start}
                         key={hash(note)}
+                        offset={this.state.noteOffset}
                     />)
             });
             console.log('noteList', noteList, this.props.songNotes.notes);
         }
         return(
             <Fragment>
-               <NoteLine/>
+                <NoteLine
+                    isPlottingPitch={this.props.isPlottingPitch}
+                    last100Frequencies={this.state.last100Frequencies}
+                />
                 {noteList}
                 {noteLines}
                 {noteTexts}
@@ -175,17 +181,19 @@ const SongTextField = styled.input`
     border-radius: 10px 0px 0px 10px;
 `;
 
+let pxPerTimeStep = 15;
 let percentPerTimeStep = 5;
 
 const Note = styled.div`
     position: absolute;
-    width: ${props => percentPerTimeStep * props.duration}%;
-    left: ${props => props.timeStart * percentPerTimeStep}%;
+    width: ${props => pxPerTimeStep * props.duration}px;
+    left: ${props => props.timeStart * pxPerTimeStep + props.offset}px;
     top: ${props => headerHeight + (height * 3 / 4) + (height) * (props.rank)}%;
     height: ${height/2}%;
 
     background: #D02000;
     border-radius: 10px;
+    z-index: 300;
 `;
 
 export default Notes;

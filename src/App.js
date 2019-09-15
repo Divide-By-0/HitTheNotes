@@ -50,12 +50,12 @@ class App extends Component {
         <div style={layoutStyles.notesArea}>
           <Notes
             songNotes={this.state.songNotes}
-            isPlottingPitch={this.isPlottingPitch}
+            isPlottingPitch={this.state.isPlottingPitch}
           />
         </div>
         <div style={layoutStyles.footer}>
           <Footer
-            isPlottingPitch={this.isPlottingPitch}
+            isPlottingPitch={this.state.isPlottingPitch}
             _updateIsPlottingPitch={this._updateIsPlottingPitch}
             serverUrl={this.state.serverUrl}
             _updateNotes={this._updateNotes}

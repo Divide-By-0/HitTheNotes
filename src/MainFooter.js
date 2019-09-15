@@ -6,7 +6,7 @@ class Footer extends React.Component  {
     constructor(props) {
       super(props);
       let defaultUrl = "https://www.youtube.com/watch?v=5d4f8-WTd0U";
-      this.state = {enteredUrl:defaultUrl, defaultUrl}
+      this.state = {enteredUrl:defaultUrl, defaultUrl, buttonText:"Go"}
       this._getNotesFromUrlHandler = this._getNotesFromUrlHandler.bind(this);
       this._pressGoButton = this._pressGoButton.bind(this);
       this._handleTextFieldChange = this._handleTextFieldChange.bind(this);
