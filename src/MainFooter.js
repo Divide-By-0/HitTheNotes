@@ -73,7 +73,7 @@ const Button = styled.button`
 `;
 
 const GetLinkButton = styled(Button)`
-    left: 60%;
+    left: 65%;
 `;
 
 
@@ -102,7 +102,7 @@ const SongTextField = styled.input`
     text-align: center;
     vertical-align: middle;
     width: 40%;
-    left: 20%;
+    left: 25%;
     height: 70%;
     top: 15%;
     placeholder: "Youtube URL";

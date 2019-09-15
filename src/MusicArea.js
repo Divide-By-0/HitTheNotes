@@ -85,7 +85,7 @@ class Notes extends React.Component  {
                 console.log('note', note, this.state.notes.indexOf(note.pitch.slice(0, -1)))
                 noteList.push(
                     <Note
-                        rank={this.state.notes.indexOf(note.pitch.slice(0, -1))}
+                        rank={noteNum - 1 - note.pitch}
                         duration={note.end-note.start}
                         timeStart={note.start}
                         key={hash(note)}
