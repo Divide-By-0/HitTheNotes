@@ -10,46 +10,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: "login",
-      username: "Anonymous",
-      gameBalance: 0,
-      allTimeBalance: 0,
-      smallBlind: 0,
-      activePlayers: {}, // player i uses cards i and i + 1, objects like 0:{...info}
-      leaderboardState: {}, // to show for all time, each entry like 'Aayush':3.45
-      faceUpHandCards: {},
-      faceUpHoleCards: [],
+      songNotes: [],
+      isPlottingPitch: false,
       serverUrl: "http://localhost:3001", 
     };
-    this._updateBalance = newBalance => {
-      //write to firebase @ michael
-      this.setState({ gameBalance: newBalance });
+    this._updateNotes = newNotes => {
+      this.setState({ songNotes: newNotes });
     };
-
-    this._updateGameState = newActivePlayers => { //write to firebase @ michael
-      this.setState({ activePlayers: newActivePlayers });
+    this._updateIsPlottingPitch = val => {
+      this.setState({ isPlottingPitch: val });
     };
-
-    this._updateLeaderboardState = newLeaderboardState => { //write to firebase @ michael
-      this.setState({ leaderboardState: newLeaderboardState });
-    };
-
-    this._getNewGameInfo = userName => {
-      // fetch active players 
-      // fetch current cards
-      // called on login
-    };
-  }
-  
-  async login(){
-    this.setState({activePlayers: {0:{}, 1:{}, 2:{}, 3:{}, 4:{}, 5:{}, 6:{}, 7:{}, 8:{}}}); //
-    this.setState({faceUpHandCards: {
-      // 0: '2C',
-      // 1: '2S'
-    }});
-    this.setState({faceUpHoleCards: {
-    }});
-    this.setState({display: "game"})
   }
   
   async componentDidMount() {
@@ -62,7 +32,7 @@ class App extends Component {
     // TODO: REPLACE WITH ACTUAL ENDPOINTS
     // CURRENTLY POPULATED WITH RANDOM EXAMPLE SHIT, 
     // THIS STUFF NEEDS TO BE SET NOT IN DIDMOUNT BUT ON SOME METHOD CALLED POSTLOGIN
-    this.login();
+    // this.login();
   }
 
   render() {
@@ -78,13 +48,26 @@ class App extends Component {
           <Header/>
         </div>
         <div style={layoutStyles.notesArea}>
-          <Notes/>
+          <Notes
+            songNotes={this.state.songNotes}
+            isPlottingPitch={this.isPlottingPitch}
+          />
         </div>
         <div style={layoutStyles.footer}>
           <Footer
+            isPlottingPitch={this.isPlottingPitch}
+            _updateIsPlottingPitch={this._updateIsPlottingPitch}
             serverUrl={this.state.serverUrl}
+            _updateNotes={this._updateNotes}
           />
         </div>
+        <div id ='detector'></div>
+        <div id ='output'></div>
+        <div id ='waveform'></div>
+        <div id ='pitch'></div>
+        <div id ='note'></div>
+        <div id ='detune'></div>
+        <div id ='detune_amt'></div>
       </Fragment>
     );
 	}

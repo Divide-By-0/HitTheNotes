@@ -1,27 +1,54 @@
 import React, {Fragment} from "react";
 import styled, {css} from "styled-components"
 import { backgroundColor } from './layout_styles.js';
+import NoteLine from './NoteLine'
+import pitchAnalyser from 'pitch-analyser';
 var hash = require('object-hash');
  
 class Notes extends React.Component  {
     constructor(props) {
       super(props);
+      async function analyserCallback(payload) {
+          let newFreqList = this.state.last100Frequencies.concat(payload.frequency);
+          if(this.state.last100Frequencies.length > 100){
+            newFreqList = newFreqList.shift();
+          }
+          await this.setState({last100Frequencies: newFreqList});
+        //   updateNote(payload.note);
+        //   updateFrequency(payload.frequency);
+        //   updateCents(payload.cents);
+      }
       this.state = {
-          notes: [
-            'A', 
-            'A#', 
-            'B',
-            'C',
-            'C#',
-            'D',
-            'D#',
-            'E',
-            'F',
-            'F#',
-            'G',
-            'G#'] 
+            last100Frequencies: [],
+            notes: [
+                "A", 
+                "A#", 
+                "B",
+                "C",
+                "C#",
+                "D",
+                "D#",
+                "E",
+                "F",
+                "F#",
+                "G",
+                "G#"],    
+            analyserOptions: {
+                callback: analyserCallback,
+                returnNote: true,
+                returnCents: true,
+                decimals: 2,
+            },
+            analyser:new pitchAnalyser(analyserOptions)
       }
     };
+    // Handle error
+    handleError(err) {
+        throw new Error(`Opps something went wrong: ${err}`);
+    }
+    componentWillUnmount() {
+        analyser.close();
+    }
     render() {
         const noteLines = [];
         let noteNum = 12;
@@ -34,33 +61,40 @@ class Notes extends React.Component  {
                 />)
         }
 
-        let noteList = [];
-        for (let note in this.props.notes){
-            noteList.push(
-                <Notes
+        const noteTexts = [];
+        for (let i = noteNum-1; i >= 0; i--){
+            noteTexts.push(
+                <NotesText 
                     rank={i}
-                    key={hash(note)}
-                    name={hash(note)}
-                />)
+                    key={this.state.notes[i]}
+                    name={this.state.notes[i]}
+                >{this.state.notes[i]}</NotesText>)
         }
 
+        let noteList = [];
+        if(this.props.songNotes && Object.keys(this.props.songNotes).length > 0){
+            this.props.songNotes.notes.forEach(note => {
+                console.log('note', note, this.state.notes.indexOf(note.pitch.slice(0, -1)))
+                noteList.push(
+                    <Note
+                        rank={this.state.notes.indexOf(note.pitch.slice(0, -1))}
+                        duration={note.end-note.start}
+                        timeStart={note.start}
+                        key={hash(note)}
+                    />)
+            });
+            console.log('noteList', noteList, this.props.songNotes.notes);
+        }
         return(
             <Fragment>
-                {noteLines}
+               <NoteLine/>
                 {noteList}
+                {noteLines}
+                {noteTexts}
             </Fragment>
         );
     }
 }
-
-const RedFooter = styled.div`
-    position: absolute;
-    width:100%;
-    height:100%;
-    background: ${backgroundColor.color};
-    z-index: -1;
-
-`;
 
 const Button = styled.button`
     font-size: 0.9em;
@@ -87,16 +121,11 @@ const NotesLine = styled.div`
     left: 7.5%;
     width: 85%;
     height: 0px;
-    z-index: 1000;
 
     background: #C4C4C4;
     border: 1px solid #E5E5E5;
 `
-
-const GetLinkButton = styled(Button)`
-    left: 60%;
-`;
-
+// z-index: 1000;
 
 export const Text = styled.span`
     font-size: 0.9em;
@@ -105,7 +134,7 @@ export const Text = styled.span`
     font-weight: bold;
 
     position: absolute;
-    width: 10%;
+    width: 5%;
     top: 30%;
     left: 2%;
     text-align: center;
@@ -113,6 +142,12 @@ export const Text = styled.span`
 
     background: ${backgroundColor.color};
     border-radius: 10px;
+`
+const NotesText = styled(Text)`
+    top: ${props => headerHeight - (height/4) + (height) * (props.rank)}%;
+    position: absolute;
+    left: 90%;
+    z-index: 500;
 `
 
 const SongTextField = styled.input`
@@ -138,13 +173,13 @@ let percentPerTimeStep = 5;
 
 const Note = styled.div`
     position: absolute;
-    height: 13%;
     width: ${props => percentPerTimeStep * props.duration}%;
     left: ${props => props.timeStart * percentPerTimeStep}%;
-    top: ${props => headerHeight + (height) * (props.rank)}%;
+    top: ${props => headerHeight + (height * 3 / 4) + (height) * (props.rank)}%;
+    height: ${height/2}%;
 
     background: #D02000;
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 10px;
 `;
 
 export default Notes;

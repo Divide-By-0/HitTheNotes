@@ -8,6 +8,7 @@ class Footer extends React.Component  {
       let defaultUrl = "https://www.youtube.com/watch?v=5d4f8-WTd0U";
       this.state = {enteredUrl:defaultUrl, defaultUrl}
       this._getNotesFromUrlHandler = this._getNotesFromUrlHandler.bind(this);
+      this._pressGoButton = this._pressGoButton.bind(this);
       this._handleTextFieldChange = this._handleTextFieldChange.bind(this);
     };
 
@@ -18,10 +19,16 @@ class Footer extends React.Component  {
         .then((data) => {
             console.log(data);
             this.setState({ notes: data });
+            this.props._updateNotes(data);
         })
         .catch(console.log);
     }
     
+    _pressGoButton(e){
+        this._getNotesFromUrlHandler(e);
+        this.props._updateIsPlottingPitch(!this.props.isPlottingPitch);
+    }
+
     async _handleTextFieldChange(e){
         await this.setState({
             enteredUrl: e.target.value
@@ -32,8 +39,8 @@ class Footer extends React.Component  {
         return(
             <Fragment>
                 <RedFooter/>
-                <SongTextField value={this.state.enteredUrl} onChange={this._handleTextFieldChange} defaultValue={this.state.defaultUrl} />
-                <GetLinkButton onClick={this._getNotesFromUrlHandler}> Go </GetLinkButton>
+                <SongTextField value={this.state.enteredUrl} onChange={this._handleTextFieldChange} />
+                <GetLinkButton onClick={this._pressGoButton}> Go </GetLinkButton>
             </Fragment>
         );
     }
