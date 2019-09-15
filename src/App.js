@@ -61,13 +61,6 @@ class App extends Component {
             _updateNotes={this._updateNotes}
           />
         </div>
-        <div id ='detector'></div>
-        <div id ='output'></div>
-        <div id ='waveform'></div>
-        <div id ='pitch'></div>
-        <div id ='note'></div>
-        <div id ='detune'></div>
-        <div id ='detune_amt'></div>
       </Fragment>
     );
 	}

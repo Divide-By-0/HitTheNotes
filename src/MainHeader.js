@@ -5,15 +5,16 @@ import { backgroundColor } from './layout_styles.js';
 class Header extends React.Component  {
     constructor(props) {
       super(props);
-      this.state = {}
+      this.state = {accuracy: 0}
     };
     render() {
         return(
             <Fragment>
                 <RedHeader/>
-                <Text> Bruh WHy Cant You Hit the Damn Notes </Text>
-                <NewGameButton> Start </NewGameButton>
-                <CopyLinkButton> New Song </CopyLinkButton>
+                <Text> Hit The Notes </Text>
+                <AccuracyText> Accuracy: {this.state.accuracy} </AccuracyText>
+                {/* <NewGameButton> Start </NewGameButton>
+                <CopyLinkButton> New Song </CopyLinkButton> */}
             </Fragment>
         );
     }
@@ -67,5 +68,9 @@ export const Text = styled.span`
 
     background: ${backgroundColor.color};
     border-radius: 10px;
+`
+
+const AccuracyText = styled(Text)`
+    left: 75%;
 `
 export default Header;
