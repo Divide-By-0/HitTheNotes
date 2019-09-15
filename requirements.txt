@@ -1,4 +1,9 @@
-flask
-youtube_dl
-py_midicsv
-gunicorn
+Click==7.0
+Flask==1.1.1
+gunicorn==19.9.0
+itsdangerous==1.1.0
+Jinja2==2.10.1
+MarkupSafe==1.1.1
+py-midicsv==1.9.0
+Werkzeug==0.15.6
+youtube-dl==2019.9.12.1
