@@ -8,16 +8,7 @@ var hash = require('object-hash');
 class Notes extends React.Component  {
     constructor(props) {
       super(props);
-      async function analyserCallback(payload) {
-          let newFreqList = this.state.last100Frequencies.concat(payload.frequency);
-          if(this.state.last100Frequencies.length > 100){
-            newFreqList = newFreqList.shift();
-          }
-          await this.setState({last100Frequencies: newFreqList});
-        //   updateNote(payload.note);
-        //   updateFrequency(payload.frequency);
-        //   updateCents(payload.cents);
-      }
+
       this.state = {
             last100Frequencies: [],
             notes: [
@@ -33,21 +24,36 @@ class Notes extends React.Component  {
                 "F#",
                 "G",
                 "G#"],    
-            analyserOptions: {
-                callback: analyserCallback,
-                returnNote: true,
-                returnCents: true,
-                decimals: 2,
-            },
-            analyser:new pitchAnalyser(analyserOptions)
-      }
+            analyser: null,
+        }
+        this.analyserCallback = this.analyserCallback.bind(this);
     };
+
+    async analyserCallback(payload) {
+        let newFreqList = this.state.last100Frequencies.concat([payload.frequency]);
+        console.log(newFreqList)
+        if(this.state.last100Frequencies.length > 100){
+          newFreqList = newFreqList.shift();
+        }
+        await this.setState({last100Frequencies: newFreqList});
+    }
+
+    componentDidMount(){
+        let analyserOptions = {
+          callback: this.analyserCallback,
+          returnNote: true,
+          returnCents: true,
+          decimals: 2,
+        }
+        this.setState({analyser: new pitchAnalyser(analyserOptions)});
+    }
+    
     // Handle error
     handleError(err) {
         throw new Error(`Opps something went wrong: ${err}`);
     }
     componentWillUnmount() {
-        analyser.close();
+        this.state.analyser.close();
     }
     render() {
         const noteLines = [];
