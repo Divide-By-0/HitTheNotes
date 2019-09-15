@@ -66,7 +66,7 @@ def midi_json(output):
     return final
 
 @app.route('/api/get_notes1', methods=['GET'])
- def get_notes():
+def get_notes1():
      #download_youtube(link)
      #convert_midi()
      notes = midi_json("test.mid")
